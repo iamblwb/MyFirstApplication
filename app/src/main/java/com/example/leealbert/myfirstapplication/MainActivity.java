@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -23,11 +24,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText nameEditText;
     RadioGroup optionsGroup;
     Button confirmBtn;
+    String welcomeMessage;
+    String selectedPokeName = "小火龍";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_main);
+        setContentView(R.layout.activity_new_main_1);
         Log.d("testLog", "Hello");
 
         infoText = (TextView)findViewById(R.id.infoText);
@@ -38,6 +41,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         optionsGroup = (RadioGroup)findViewById(R.id.optionsGroup);
         confirmBtn = (Button)findViewById(R.id.confirmBtn);
         confirmBtn.setOnClickListener(MainActivity.this);
+
+        optionsGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                Log.d("test", "checkedId:" + checkedId);
+
+                switch(checkedId)
+                {
+                    case R.id.radioButton:
+                        Log.d("test", "radioButton1");
+                        selectedPokeName = "小火龍";
+                        break;
+                    case R.id.radioButton2:
+                        Log.d("test", "radioButton2");
+                        selectedPokeName = "傑尼龜";
+                        break;
+                    case R.id.radioButton3:
+                        Log.d("test", "radioButton3");
+                        selectedPokeName = "妙蛙種子";
+                        break;
+                    default:
+                        Log.d("test", "radioButton1");
+                        selectedPokeName = "小火龍";
+                        break;
+                }
+            }
+        });
+
     }
 
     @Override
@@ -54,12 +87,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             RadioButton selectedRadioButton = (RadioButton)selectedRadioButtonView;
             String radioBtnText = selectedRadioButton.getText().toString();
 
-            String welcomeMessage = String.format("你好,訓練家%s 歡迎來到神奇寶貝世界 你的第一個夥伴是%s",
-                    name,radioBtnText);
+            CheckBox hideCheckBox = (CheckBox)findViewById(R.id.hideCheckBox);
+            if(!hideCheckBox.isChecked())
+            {
+                welcomeMessage = String.format("你好,訓練家%s 歡迎來到神奇寶貝世界 你的第一個夥伴是%s",
+                        name, selectedPokeName);
+            }
+            else
+            {
+                welcomeMessage = String.format("你好,歡迎來到神奇寶貝世界 你的第一個夥伴是%s",
+                        selectedPokeName);
+            }
+
             infoText.setText(welcomeMessage);
 
 
         }
+        /*
+        else if(viewId == R.id.optionsGroup)
+        {
+            Log.d("test", "HelloRadio");
+        }
+        */
     }
 
     @Override

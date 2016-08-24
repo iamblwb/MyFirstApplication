@@ -7,6 +7,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/appearanceImg"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="25dp"
-        android:src="@drawable/unknown" />
+        android:src="@drawable/unknown"
+        android:scaleType="fitCenter"
+        android:rotation="45"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
