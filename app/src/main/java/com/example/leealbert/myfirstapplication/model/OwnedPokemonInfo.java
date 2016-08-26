@@ -6,6 +6,8 @@ package com.example.leealbert.myfirstapplication.model;
 public class OwnedPokemonInfo {
 
     public static final int maxNumSkills = 4;
+    public static String[] typeNames;
+
     public int pokemonId;
     public String name;
     public int level;
@@ -17,9 +19,10 @@ public class OwnedPokemonInfo {
 
     public String[] skills = new String[maxNumSkills];
 
+    public boolean isSelected = false;
+
     public OwnedPokemonInfo()
     {
 
     }
-
 }

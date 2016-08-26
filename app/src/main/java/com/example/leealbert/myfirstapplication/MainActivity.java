@@ -1,6 +1,8 @@
 package com.example.leealbert.myfirstapplication;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,8 +19,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, EditText.OnEditorActionListener {
+//public class MainActivity extends AppCompatActivity implements View.OnClickListener, EditText.OnEditorActionListener {
 
+public class MainActivity extends CustomizedActivity implements View.OnClickListener, EditText.OnEditorActionListener {
+
+    public static final String selectedPokemonIndexKey = "selectedPokemonIndexKey";
     //static final String[] pokemonRadioNames = {"小火龍", "傑尼龜", "妙蛙種子"};
     TextView infoText;
     EditText nameEditText;
@@ -27,11 +32,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String welcomeMessage;
     String selectedPokeName = "小火龍";
 
+    Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_main_1);
         Log.d("testLog", "Hello");
+
+        handler = new Handler(this.getMainLooper());
+
+        activityName = this.getClass().getSimpleName();
 
         infoText = (TextView)findViewById(R.id.infoText);
         nameEditText = (EditText)findViewById(R.id.nameEditText);
@@ -73,6 +84,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    Runnable jumpToNewActivityTask = new Runnable() {
+        @Override
+        public void run() {
+            jumpToNewActivity();
+        }
+    };
+
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
@@ -101,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             infoText.setText(welcomeMessage);
 
-
+            //jumpToNewActivity();
+            handler.postDelayed(jumpToNewActivityTask, 3 * 1000);//delay 3 secs
         }
         /*
         else if(viewId == R.id.optionsGroup)
@@ -109,6 +128,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("test", "HelloRadio");
         }
         */
+    }
+
+    private int getSelectedPokemonIndex()
+    {
+        int selectedRadioButtonId = optionsGroup.getCheckedRadioButtonId();
+        View selectedRadioButtonView = optionsGroup.findViewById(selectedRadioButtonId);
+        return optionsGroup.indexOfChild(selectedRadioButtonView);
+    }
+
+    private void jumpToNewActivity()
+    {
+        Intent intent = new Intent();
+        intent.setClass(MainActivity.this, PokemonListActivity.class);
+
+        intent.putExtra(selectedPokemonIndexKey,getSelectedPokemonIndex());
+
+        startActivity(intent);
     }
 
     @Override
