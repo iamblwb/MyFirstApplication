@@ -120,7 +120,7 @@ public class PokemonListViewAdapter extends ArrayAdapter<OwnedPokemonInfo> imple
             mCurrentHP.setText(String.valueOf(data.currentHP));
             mMaxHP.setText(String.valueOf(data.maxHP));
 
-            int progress = (int)((float)data.currentHP/data.maxHP) * 100;
+            int progress = (int)(((float)data.currentHP/data.maxHP) * 100);
             mHPBar.setProgress(progress);
 
             //TODO: load image through library from Internet, universal image loader
@@ -154,5 +154,35 @@ public class PokemonListViewAdapter extends ArrayAdapter<OwnedPokemonInfo> imple
                 setSelected();
             }
         }
+    }
+
+
+    public OwnedPokemonInfo getItemWithName(String pokemonName)
+    {
+        for(int i=0;i< getCount();i++)
+        {
+            OwnedPokemonInfo ownedPokemonInfo = getItem(i);
+            if (ownedPokemonInfo.name.equals(pokemonName))
+            {
+                return ownedPokemonInfo;
+            }
+        }
+
+        return null;
+    }
+
+    public void update(OwnedPokemonInfo newData)
+    {
+        OwnedPokemonInfo oldData = getItemWithName(newData.name);
+
+        oldData.skills = newData.skills;
+        oldData.name = newData.name;
+        oldData.level = newData.level;
+        oldData.currentHP = newData.currentHP;
+        oldData.maxHP = newData.maxHP;
+
+        //why can't oldData = newData here???
+
+        notifyDataSetChanged();//reflect changes on ListView
     }
 }

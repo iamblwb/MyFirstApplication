@@ -145,6 +145,8 @@ public class MainActivity extends CustomizedActivity implements View.OnClickList
         intent.putExtra(selectedPokemonIndexKey,getSelectedPokemonIndex());
 
         startActivity(intent);
+
+        finish();//will be ended.
     }
 
     @Override

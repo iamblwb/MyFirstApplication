@@ -51,4 +51,17 @@ public class CustomizedActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
     }
+
+    @Override
+    public void onBackPressed() {
+
+        if(isTaskRoot())//here task is not process, it's the sets of activities..in android ****
+        {
+            moveTaskToBack(true);//move root activity to background
+        }
+        else
+        {
+            super.onBackPressed();//use default behavior
+        }
+    }
 }

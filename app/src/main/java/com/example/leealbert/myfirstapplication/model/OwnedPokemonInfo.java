@@ -1,10 +1,14 @@
 package com.example.leealbert.myfirstapplication.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by leealbert on 16/8/24.
  */
-public class OwnedPokemonInfo {
+public class OwnedPokemonInfo implements Parcelable {
 
+    public final static String nameKey = "name";
     public static final int maxNumSkills = 4;
     public static String[] typeNames;
 
@@ -25,4 +29,46 @@ public class OwnedPokemonInfo {
     {
 
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.pokemonId);
+        dest.writeString(this.name);
+        dest.writeInt(this.level);
+        dest.writeInt(this.currentHP);
+        dest.writeInt(this.maxHP);
+        dest.writeInt(this.type_1);
+        dest.writeInt(this.type_2);
+        dest.writeStringArray(this.skills);
+        dest.writeByte(this.isSelected ? (byte) 1 : (byte) 0);
+    }
+
+    protected OwnedPokemonInfo(Parcel in) {
+        this.pokemonId = in.readInt();
+        this.name = in.readString();
+        this.level = in.readInt();
+        this.currentHP = in.readInt();
+        this.maxHP = in.readInt();
+        this.type_1 = in.readInt();
+        this.type_2 = in.readInt();
+        this.skills = in.createStringArray();
+        this.isSelected = in.readByte() != 0;
+    }
+
+    public static final Parcelable.Creator<OwnedPokemonInfo> CREATOR = new Parcelable.Creator<OwnedPokemonInfo>() {
+        @Override
+        public OwnedPokemonInfo createFromParcel(Parcel source) {
+            return new OwnedPokemonInfo(source);
+        }
+
+        @Override
+        public OwnedPokemonInfo[] newArray(int size) {
+            return new OwnedPokemonInfo[size];
+        }
+    };
 }
